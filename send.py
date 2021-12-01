@@ -10,6 +10,7 @@ MJ_API_KEY     = os.environ.get('MJ_APIKEY_PUBLIC')
 MJ_API_SECRET  = os.environ.get('MJ_APIKEY_SECRET')
 FROM_EMAIL     = os.environ.get('FROM_EMAIL')
 FROM_NAME      = os.environ.get('FROM_NAME')
+FROM_SUBJECT   = os.environ.get('FROM_SUBJECT')
 
 # SPREADSHEET SETUP
 gc = gspread.service_account(filename='.config/service_account.json')
@@ -50,15 +51,15 @@ def sendEmail(worksheet):
                             "Name": name
                         }
                     ],
-                    "Subject": "My first Mailjet Email!",
-                    "TextPart": "Greetings from Mailjet!",
+                    "Subject": FROM_SUBJECT,
+                    "TextPart": FROM_SUBJECT,
                     "HTMLPart": email_message.format(name=name, link=link)
                 }
             ]
         }
 
         result = mailjet.send.create(data=data)
-        print("Send email status :" + result.status_code)
+        print("Send email status : {}".format(result.status_code))
         print('=======================================')
 
 
